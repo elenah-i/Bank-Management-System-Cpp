@@ -9,17 +9,16 @@
 
 using namespace std;
 
-// Bank Account Structure with properly sized character arrays
 struct Bank {
     int acc_no;
     int day, month, year;
     int age;
     float amt;
-    char pnumber[15];      // Corrected: was char pnumber;
-    char idnum[20];        // Corrected: was char idnum;
-    char name[20];         // Corrected: was char name;
-    char fathname[20];     // Corrected: was char fathname;
-    char address[50];      // Corrected: was char address;
+    char pnumber[15];     
+    char idnum[20];       
+    char name[20];         
+    char fathname[20];     
+    char address[50];     
 };
 
 // Function Declarations
@@ -47,25 +46,25 @@ void clear_input_buffer() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-// Utility function to clear screen
+
 void clear_screen() {
     system("cls");
 }
 
-// Utility function to pause screen
+
 void pause_screen() {
     cout << "\n\nPress Enter to continue...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-// Display system logo
+
 void logo() {
     cout << "\n\t\t==================================\n"
          << "\t\t   BANK MANAGEMENT SYSTEM v2.0    \n"
          << "\t\t==================================\n";
 }
 
-// Login menu display and handling
+
 void login_menu() {
     int choice;
     bool exit_loop = false;
@@ -105,7 +104,7 @@ void login_menu() {
     }
 }
 
-// Login function with corrected password handling
+
 void login() {
     char pass[20];  // Corrected: was char pass;
     string password = "aleena";
@@ -136,7 +135,7 @@ void login() {
     }
 }
 
-// Main menu display and navigation
+
 void main_menu() {
     int choice;
     bool exit_loop = false;
@@ -198,7 +197,7 @@ void main_menu() {
     }
 }
 
-// Edit menu display
+
 void edit_menu() {
     int choice;
     bool exit_loop = false;
@@ -243,7 +242,6 @@ void edit_menu() {
     }
 }
 
-// Transaction menu display
 void transaction_menu() {
     int choice;
     bool exit_loop = false;
@@ -293,7 +291,6 @@ void transaction_menu() {
     }
 }
 
-// Create new account with comprehensive input validation
 void new_acc() {
     int acn;
     bool account_exists = false;
@@ -380,7 +377,7 @@ void new_acc() {
     pause_screen();
 }
 
-// View all accounts with sorted display
+
 void view_acc() {
     clear_screen();
     logo();
@@ -686,7 +683,7 @@ void balance() {
     pause_screen();
 }
 
-// Deposit money into account
+
 void deposit() {
     clear_screen();
     logo();
@@ -839,7 +836,7 @@ void withdraw() {
     pause_screen();
 }
 
-// Main program entry point
+
 int main() {
     login_menu();
     return 0;
