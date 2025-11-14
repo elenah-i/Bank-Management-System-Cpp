@@ -107,7 +107,7 @@ void login_menu() {
 
 void login() {
     char pass[20];  // Corrected: was char pass;
-    string password = "aleena";
+    string password = "password";
     int attempts = 3;
     bool login_success = false;
     
