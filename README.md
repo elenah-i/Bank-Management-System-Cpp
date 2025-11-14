@@ -7,7 +7,7 @@ A console-based Bank Management System written in C++ that allows users to creat
 ## ⭐ Features
 
 ### 🔐 Security
-- Password-protected login (`aleena`)
+- Password-protected login (`password`)
 - Validations for account number and sufficient balance
 
 ### 👤 Account Management
@@ -64,7 +64,7 @@ cl main.cpp
 main.exe
 📘 How to Use
 1. Run the program
-2. Enter password: aleena
+2. Enter password: password
 3. Choose an option from the main menu:
 Option	Action
 1	Open New Account
