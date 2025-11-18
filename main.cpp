@@ -496,7 +496,11 @@ void new_acc()
         cout << "\n\t\t*** Enter New Customer Details ***\n\n";
         setColor(7);
 
-        cout << "\n\t\tAccount Number: ";
+
+        setColor(14);
+        cout << "\n\t\tAccount Number: ";        s
+        setColor(7);
+        
         if (!(cin >> acn))
         {
             clear_input_buffer();
