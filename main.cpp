@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <limits>
 #include <windows.h>
- 
+
 using namespace std;
 struct Bank
 {
@@ -53,15 +53,21 @@ void clear_screen()
 {
     system("cls");
 }
-
+// ....... TO SET COLORS
+void setColor(int c)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
+}
 void pause_screen()
 {
+    setColor(14);
     cout << "\n\nPress Enter to continue...";
+    setColor(7);
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
-
 void logo()
 {
+    setColor(11);
     cout << "\t                      *%@%*                    \n"
             "\t                  +#@@#***#@@#+                \n"
             "\t               *%@@@+#@%=%@#+@@@%*             \n"
@@ -77,16 +83,19 @@ void logo()
             "\t              +###++*##*=*##*++###+            \n"
             "\t             %%%%%%%%%%%%%%%%%%%%%%%           \n"
             "\t           *#########################*         \n";
+
+    setColor(14);
     cout << "\n\t\t==================================\n"
          << "\t\t       BANK MANAGEMENT SYSTEM        \n"
-         << "\t\t==================================\n";
- 
+         << "\t\t==================================\n\n";
+    setColor(7);
 }
-
 // ........LOADING ANIMATION
 void loading()
 {
+    setColor(14);
     cout << "\nProcessing";
+    setColor(7);
     for (int i = 0; i < 3; i++)
     {
         Sleep(300);
@@ -94,20 +103,19 @@ void loading()
     }
     cout << "\n\n";
 }
-// ....... TO SET COLORS
-void setColor(int c)
-{
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
-}
 
 void footer()
 {
+    setColor(11);
     cout << "\n";
-    cout << "==================================================\n";
-    cout << "              THANK YOU FOR USING\n";
-    cout << "            THE BANK MANAGEMENT SYSTEM\n";
-    cout << "     © ABC Bank | All Rights Reserved (2025)\n";
-    cout << "==================================================\n";
+    cout << "\t==================================================\n";
+    setColor(14);
+    cout << "\t              THANK YOU FOR USING\n";
+    cout << "\t            THE BANK MANAGEMENT SYSTEM\n";
+    cout << "\t     © ABC Bank | All Rights Reserved (2025)\n";
+    setColor(11);
+    cout << "\t==================================================\n";
+    setColor(7);
 }
 
 void login_menu()
@@ -119,20 +127,34 @@ void login_menu()
     {
         clear_screen();
         logo();
+
+        setColor(11);
         cout << "\n\t\t************* LOGIN **************\n"
              << "\t\t ________________________________ \n"
              << "\t\t|                                |\n"
-             << "\t\t|_________ 1) Login _____________|\n"
+             << "\t\t|_________ ";
+        setColor(14);
+        cout << "1) Login";
+        setColor(11);
+        cout << " _____________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|_________ 2) Exit ______________|\n"
+             << "\t\t|_________ ";
+        setColor(14);
+        cout << "2) Exit";
+        setColor(11);
+        cout << " ______________|\n"
              << "\t\t|                                |\n"
              << "\t\t|________________________________|\n";
+        setColor(14);
         cout << "\n\n\t\t\tYour choice: ";
+        setColor(7);
 
         if (!(cin >> choice))
         {
             clear_input_buffer();
+            setColor(12); // Red
             cout << "\n\n\t\t\tInvalid input! Please enter a number.\n\n";
+            setColor(7);
             pause_screen();
             continue;
         }
@@ -141,13 +163,21 @@ void login_menu()
         switch (choice)
         {
         case 1:
+            setColor(10); // Green
+            cout << "\n\n\t\tLogging in...\n\n";
+            setColor(7);
+            loading();
             login();
             break;
+
         case 2:
             footer();
             exit(0);
+
         default:
+            setColor(12); // Red
             cout << "\n\n\t\t\tWrong Choice! Try Again.\n\n";
+            setColor(7);
             pause_screen();
         }
     }
@@ -155,7 +185,7 @@ void login_menu()
 
 void login()
 {
-    char pass[20]; // Corrected: was char pass;
+    char pass[20];
     string password = "password";
     int attempts = 3;
     bool login_success = false;
@@ -163,27 +193,36 @@ void login()
     while (attempts > 0 && !login_success)
     {
         clear_screen();
+        setColor(14);
         cout << "\n\n\t\t\tEnter the password to login: ";
+        setColor(7);
         cin >> pass;
         clear_input_buffer();
 
-        // Corrected: proper string comparison using strcmp
         if (strcmp(pass, password.c_str()) == 0)
         {
+            setColor(10); // Green
+            cout << "\n\n\t\t\tLogin Successful!\n\n";
+            setColor(7);
+            loading();
             login_success = true;
             main_menu();
         }
         else
         {
             attempts--;
+            setColor(12); // Red
             if (attempts > 0)
             {
-                cout << "\n\n\t\t\tWrong password! " << attempts << " attempt(s) remaining.\n\n";
+                cout << "\n\n\t\t\tWrong password! " << attempts
+                     << " attempt(s) remaining.\n\n";
+                setColor(7);
                 pause_screen();
             }
             else
             {
                 cout << "\n\n\t\t\tMaximum login attempts exceeded!\n\n";
+                setColor(7);
                 pause_screen();
                 login_menu();
             }
@@ -200,28 +239,60 @@ void main_menu()
     {
         clear_screen();
         logo();
-        cout << "\n\t\t*********** MAIN MENU ************\n"
-             << "\t\t ________________________________ \n"
+
+        setColor(14);
+        cout << "\n\t\t*********** MAIN MENU ************\n";
+        setColor(11);
+        cout << "\t\t ________________________________ \n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 1) Open New Account _______|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "1) Open New Account";
+        setColor(11);
+        cout << " _______|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 2) View Accounts __________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "2) View Accounts";
+        setColor(11);
+        cout << " __________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 3) Edit Accounts __________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "3) Edit Accounts";
+        setColor(11);
+        cout << " __________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 4) Search Records _________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "4) Search Records";
+        setColor(11);
+        cout << " _________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 5) Transactions ___________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "5) Transactions";
+        setColor(11);
+        cout << " ___________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 6) Exit __________________ |\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "6) Exit";
+        setColor(11);
+        cout << " __________________ |\n"
              << "\t\t|                                |\n"
              << "\t\t|________________________________|\n";
+
+        setColor(14);
         cout << "\n\n\t\t\tYour choice: ";
+        setColor(7);
 
         if (!(cin >> choice))
         {
             clear_input_buffer();
+            setColor(12);
             cout << "\n\n\t\t\tInvalid input! Please enter a number.\n\n";
+            setColor(7);
             pause_screen();
             continue;
         }
@@ -250,7 +321,9 @@ void main_menu()
             exit_loop = true;
             break;
         default:
+            setColor(12);
             cout << "\n\n\t\t\tWrong Choice! Try Again.\n\n";
+            setColor(7);
             pause_screen();
         }
     }
@@ -267,22 +340,42 @@ void edit_menu()
     {
         clear_screen();
         logo();
-        cout << "\n\t\t*********** EDIT MENU ************\n"
-             << "\t\t ________________________________ \n"
+
+        setColor(14);
+        cout << "\n\t\t*********** EDIT MENU ************\n";
+        setColor(11);
+        cout << "\t\t ________________________________ \n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 1) Update Details _________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "1) Update Details";
+        setColor(11);
+        cout << " _________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 2) Delete Records _________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "2) Delete Records";
+        setColor(11);
+        cout << " _________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 3) Main Menu ______________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "3) Main Menu";
+        setColor(11);
+        cout << " ______________|\n"
              << "\t\t|                                |\n"
              << "\t\t|________________________________|\n";
+
+        setColor(14);
         cout << "\n\n\t\t\tYour choice: ";
+        setColor(7);
 
         if (!(cin >> choice))
         {
             clear_input_buffer();
+            setColor(12);
             cout << "\n\n\t\t\tInvalid input! Please enter a number.\n\n";
+            setColor(7);
             pause_screen();
             continue;
         }
@@ -300,7 +393,9 @@ void edit_menu()
             exit_loop = true;
             break;
         default:
+            setColor(12);
             cout << "\n\n\t\t\tWrong Choice! Try Again.\n\n";
+            setColor(7);
             pause_screen();
         }
     }
@@ -315,24 +410,48 @@ void transaction_menu()
     {
         clear_screen();
         logo();
-        cout << "\n\t\t******* TRANSACTIONS MENU ********\n"
-             << "\t\t ________________________________ \n"
+
+        setColor(14);
+        cout << "\n\t\t******* TRANSACTIONS MENU ********\n";
+        setColor(11);
+        cout << "\t\t ________________________________ \n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 1) Check Balance __________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "1) Check Balance";
+        setColor(11);
+        cout << " __________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 2) Deposit Money __________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "2) Deposit Money";
+        setColor(11);
+        cout << " __________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 3) Withdraw Money _________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "3) Withdraw Money";
+        setColor(11);
+        cout << " _________|\n"
              << "\t\t|                                |\n"
-             << "\t\t|____ 4) Main Menu ______________|\n"
+             << "\t\t|____ ";
+        setColor(14);
+        cout << "4) Main Menu";
+        setColor(11);
+        cout << " ______________|\n"
              << "\t\t|                                |\n"
              << "\t\t|________________________________|\n";
+
+        setColor(14);
         cout << "\n\n\t\t\tYour choice: ";
+        setColor(7);
 
         if (!(cin >> choice))
         {
             clear_input_buffer();
+            setColor(12);
             cout << "\n\n\t\t\tInvalid input! Please enter a number.\n\n";
+            setColor(7);
             pause_screen();
             continue;
         }
@@ -355,7 +474,9 @@ void transaction_menu()
             exit_loop = true;
             break;
         default:
+            setColor(12);
             cout << "\n\n\t\t\tWrong Choice! Try Again.\n\n";
+            setColor(7);
             pause_screen();
         }
     }
@@ -370,13 +491,18 @@ void new_acc()
     {
         clear_screen();
         logo();
-        cout << "\n\t\t*** Enter New Customer Details ***\n\n";
-        cout << "\n\t\tAccount Number: ";
 
+        setColor(14);
+        cout << "\n\t\t*** Enter New Customer Details ***\n\n";
+        setColor(7);
+
+        cout << "\n\t\tAccount Number: ";
         if (!(cin >> acn))
         {
             clear_input_buffer();
+            setColor(12);
             cout << "\n\t\tInvalid input! Please enter a valid account number.\n\n";
+            setColor(7);
             pause_screen();
             continue;
         }
@@ -399,7 +525,9 @@ void new_acc()
 
         if (account_exists)
         {
+            setColor(12);
             cout << "\n\t\tAccount no. already in use!\n\n";
+            setColor(7);
             pause_screen();
             account_exists = false;
         }
@@ -411,38 +539,58 @@ void new_acc()
 
     b.acc_no = acn;
 
+    setColor(14);
     cout << "\n\t\tName: ";
+    setColor(7);
     cin.getline(b.name, 20);
 
+    setColor(14);
     cout << "\n\t\tFather's Name: ";
+    setColor(7);
     cin.getline(b.fathname, 20);
 
+    setColor(14);
     cout << "\n\t\tDate of Birth (dd-mm-yyyy): ";
+    setColor(7);
     scanf("%d-%d-%d", &b.day, &b.month, &b.year);
     clear_input_buffer();
 
+    setColor(14);
     cout << "\n\t\tAge: ";
+    setColor(7);
     while (!(cin >> b.age) || b.age < 0 || b.age > 120)
     {
         clear_input_buffer();
+        setColor(12);
         cout << "\n\t\tInvalid age! Please enter a valid age: ";
+        setColor(7);
     }
     clear_input_buffer();
 
+    setColor(14);
     cout << "\n\t\tPhone Number: ";
+    setColor(7);
     cin.getline(b.pnumber, 15);
 
+    setColor(14);
     cout << "\n\t\tID Card Number: ";
+    setColor(7);
     cin.getline(b.idnum, 20);
 
+    setColor(14);
     cout << "\n\t\tAddress: ";
+    setColor(7);
     cin.getline(b.address, 50);
 
+    setColor(14);
     cout << "\n\t\tEnter the amount to deposit (Rs.): ";
+    setColor(7);
     while (!(cin >> b.amt) || b.amt < 0)
     {
         clear_input_buffer();
+        setColor(12);
         cout << "\n\t\tInvalid amount! Please enter a valid amount: ";
+        setColor(7);
     }
     clear_input_buffer();
 
@@ -452,11 +600,15 @@ void new_acc()
     {
         out_file.write((char *)&b, sizeof(b));
         out_file.close();
+        setColor(10);
         cout << "\n\n\t\tAccount Created Successfully!!!\n\n";
+        setColor(7);
     }
     else
     {
+        setColor(12);
         cout << "\n\t\tError! Cannot open the file!!\n\n";
+        setColor(7);
     }
     pause_screen();
 }
@@ -465,27 +617,35 @@ void view_acc()
 {
     clear_screen();
     logo();
+
+    setColor(14);
     cout << "\n\n================== VIEW ACCOUNTS =================\n\n";
+    setColor(7);
+
     Bank temp;
     vector<Bank> arr;
     ifstream in_file(DB_FILE, ios::binary);
 
     if (!in_file.is_open())
     {
+        setColor(12);
         cout << "\n\t\tError! Cannot open the File!!\n\n";
+        setColor(7);
         pause_screen();
         return;
     }
 
     while (in_file.read((char *)&b, sizeof(b)))
-    {
         arr.push_back(b);
-    }
     in_file.close();
 
     if (arr.empty())
     {
+        setColor(12);
         cout << "\n\t\tNo accounts found in the system.\n\n";
+        setColor(7);
+
+        pause_screen();
         return;
     }
 
@@ -504,9 +664,11 @@ void view_acc()
     }
 
     // Display header
+    setColor(11);
     for (int w = 1; w <= 130; w++)
         cout << "=";
     cout << "\n";
+    setColor(14);
     cout << left << setw(10) << "Acc No"
          << setw(15) << "Name"
          << setw(15) << "Father Name"
@@ -516,9 +678,11 @@ void view_acc()
          << setw(15) << "ID Card"
          << setw(20) << "Address"
          << setw(12) << "Balance\n";
+    setColor(11);
     for (int w = 1; w <= 130; w++)
         cout << "=";
     cout << "\n";
+    setColor(7);
 
     // Display account data
     for (int i = 0; i < arr.size(); i++)
@@ -534,9 +698,11 @@ void view_acc()
              << fixed << setprecision(2) << arr[i].amt << "\n";
     }
 
+    setColor(11);
     for (int w = 1; w <= 130; w++)
         cout << "=";
     cout << "\n";
+    setColor(7);
 }
 
 // Update account details
@@ -544,17 +710,18 @@ void update_acc()
 {
     clear_screen();
     logo();
-    cout << "\n\n================== UPDATE ACCOUNT =================\n\n";
+
+    setColor(14); cout << "\n\n================== UPDATE ACCOUNT =================\n\n"; setColor(7);
     view_acc();
 
     int acn;
     int flag = 0;
 
-    cout << "\n\nEnter Account Number to Update: ";
+    setColor(14); cout << "\n\nEnter Account Number to Update: "; setColor(7);
     if (!(cin >> acn))
     {
         clear_input_buffer();
-        cout << "\n\t\tInvalid input!\n\n";
+        setColor(12); cout << "\n\t\tInvalid input!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -565,7 +732,7 @@ void update_acc()
 
     if (!in_file.is_open())
     {
-        cout << "\n\t\tError! Cannot open the file!!\n\n";
+        setColor(12); cout << "\n\t\tError! Cannot open the file!!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -577,7 +744,8 @@ void update_acc()
             flag = 1;
             clear_screen();
             logo();
-            cout << "\n*** Previously Stored Details ***\n\n";
+            setColor(11); cout << "\n*** Previously Stored Details ***\n\n"; setColor(7);
+            setColor(14);
             cout << "Account No: " << b.acc_no
                  << "\nName: " << b.name
                  << "\nFather Name: " << b.fathname
@@ -587,47 +755,38 @@ void update_acc()
                  << "\nID: " << b.idnum
                  << "\nAddress: " << b.address
                  << "\nBalance: Rs. " << fixed << setprecision(2) << b.amt << "\n\n";
+            setColor(7);
 
-            cout << "\n*** Enter New Details ***\n";
+            setColor(11); cout << "\n*** Enter New Details ***\n"; setColor(7);
             b.acc_no = acn;
 
-            cout << "\nName: ";
-            cin.getline(b.name, 20);
-
-            cout << "Father's Name: ";
-            cin.getline(b.fathname, 20);
-
-            cout << "Date of Birth (dd-mm-yyyy): ";
-            scanf("%d-%d-%d", &b.day, &b.month, &b.year);
+            setColor(14); cout << "\nName: "; setColor(7); cin.getline(b.name, 20);
+            setColor(14); cout << "Father's Name: "; setColor(7); cin.getline(b.fathname, 20);
+            setColor(14); cout << "Date of Birth (dd-mm-yyyy): "; setColor(7); scanf("%d-%d-%d", &b.day, &b.month, &b.year);
             clear_input_buffer();
 
-            cout << "Age: ";
+            setColor(14); cout << "Age: "; setColor(7);
             while (!(cin >> b.age) || b.age < 0 || b.age > 120)
             {
                 clear_input_buffer();
-                cout << "Invalid age! Please enter a valid age: ";
+                setColor(12); cout << "Invalid age! Please enter a valid age: "; setColor(7);
             }
             clear_input_buffer();
 
-            cout << "Phone Number: ";
-            cin.getline(b.pnumber, 15);
+            setColor(14); cout << "Phone Number: "; setColor(7); cin.getline(b.pnumber, 15);
+            setColor(14); cout << "ID Number: "; setColor(7); cin.getline(b.idnum, 20);
+            setColor(14); cout << "Address: "; setColor(7); cin.getline(b.address, 50);
 
-            cout << "ID Number: ";
-            cin.getline(b.idnum, 20);
-
-            cout << "Address: ";
-            cin.getline(b.address, 50);
-
-            cout << "Enter the amount: Rs. ";
+            setColor(14); cout << "Enter the amount: Rs. "; setColor(7);
             while (!(cin >> b.amt) || b.amt < 0)
             {
                 clear_input_buffer();
-                cout << "Invalid amount! Please enter a valid amount: ";
+                setColor(12); cout << "Invalid amount! Please enter a valid amount: "; setColor(7);
             }
             clear_input_buffer();
 
             out_file.write((char *)&b, sizeof(b));
-            cout << "\n\nRecord Updated Successfully!\n\n";
+            setColor(10); cout << "\n\nRecord Updated Successfully!\n\n"; setColor(7);
         }
         else
         {
@@ -640,7 +799,7 @@ void update_acc()
 
     if (flag == 0)
     {
-        cout << "\n\t\tNo Record Found!!!\n\n";
+        setColor(12); cout << "\n\t\tNo Record Found!!!\n\n"; setColor(7);
     }
 
     remove(DB_FILE.c_str());
@@ -648,23 +807,23 @@ void update_acc()
     pause_screen();
 }
 
-// Delete account
 void delete_acc()
 {
     loading();
     clear_screen();
     logo();
-    cout << "\n\n================== DELETE ACCOUNT =================\n\n";
+
+    setColor(14); cout << "\n\n================== DELETE ACCOUNT =================\n\n"; setColor(7);
     view_acc();
 
     int acn;
     int flag = 0;
 
-    cout << "\n\nEnter Account Number to Delete: ";
+    setColor(14); cout << "\n\nEnter Account Number to Delete: "; setColor(7);
     if (!(cin >> acn))
     {
         clear_input_buffer();
-        cout << "\n\t\tInvalid input!\n\n";
+        setColor(12); cout << "\n\t\tInvalid input!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -675,7 +834,7 @@ void delete_acc()
 
     if (!in_file.is_open())
     {
-        cout << "\n\t\tError! Cannot open the file!!\n\n";
+        setColor(12); cout << "\n\t\tError! Cannot open the file!!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -683,13 +842,9 @@ void delete_acc()
     while (in_file.read((char *)&b, sizeof(b)))
     {
         if (b.acc_no != acn)
-        {
             out_file.write((char *)&b, sizeof(b));
-        }
         else
-        {
             flag = 1;
-        }
     }
 
     in_file.close();
@@ -697,11 +852,11 @@ void delete_acc()
 
     if (flag == 1)
     {
-        cout << "\n\tDeletion Successful!!\n\n";
+        setColor(10); cout << "\n\tDeletion Successful!!\n\n"; setColor(7);
     }
     else
     {
-        cout << "\n\n\t\tNo Such Record Found!!!\n\n";
+        setColor(12); cout << "\n\n\t\tNo Such Record Found!!!\n\n"; setColor(7);
     }
 
     remove(DB_FILE.c_str());
@@ -709,22 +864,22 @@ void delete_acc()
     pause_screen();
 }
 
-// Search accounts by name
 void search_acc()
 {
     clear_screen();
     logo();
-    cout << "\n\n================== SEARCH RECORD =================\n\n";
-    char key[20]; // Corrected: was char key; which could only store one character
+
+    setColor(14); cout << "\n\n================== SEARCH RECORD =================\n\n"; setColor(7);
+    char key[20];
     int flag = 0;
 
-    cout << "Enter Name to Search Record: ";
+    setColor(14); cout << "Enter Name to Search Record: "; setColor(7);
     cin.getline(key, 20);
 
     ifstream in_file(DB_FILE, ios::binary);
     if (!in_file.is_open())
     {
-        cout << "\n\t\tError! Cannot open the file!!\n\n";
+        setColor(12); cout << "\n\t\tError! Cannot open the file!!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -734,6 +889,7 @@ void search_acc()
         if (strcmp(key, b.name) == 0)
         {
             flag = 1;
+            setColor(11);
             cout << "\n\tAccount Number   :   " << b.acc_no
                  << "\n\tName             :   " << b.name
                  << "\n\tFather Name      :   " << b.fathname
@@ -743,32 +899,31 @@ void search_acc()
                  << "\n\tID Card Number   :   " << b.idnum
                  << "\n\tAddress          :   " << b.address
                  << "\n\tBalance          :   Rs. " << fixed << setprecision(2) << b.amt << "\n";
+            setColor(7);
         }
     }
 
     if (flag == 0)
-    {
-        cout << "\n\n\t\tNo Such Record Found!!!\n\n";
-    }
+        { setColor(12); cout << "\n\n\t\tNo Such Record Found!!!\n\n"; setColor(7); }
 
     in_file.close();
     pause_screen();
 }
 
-// Check account balance
 void balance()
 {
     clear_screen();
     logo();
-    cout << "\n\n================== CHECK BALANCE =================\n\n";
+
+    setColor(14); cout << "\n\n================== CHECK BALANCE =================\n\n"; setColor(7);
     int acn;
     int flag = 0;
 
-    cout << "Enter Account Number: ";
+    setColor(14); cout << "Enter Account Number: "; setColor(7);
     if (!(cin >> acn))
     {
         clear_input_buffer();
-        cout << "\n\t\tInvalid input!\n\n";
+        setColor(12); cout << "\n\t\tInvalid input!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -777,7 +932,7 @@ void balance()
     ifstream in_file(DB_FILE, ios::binary);
     if (!in_file.is_open())
     {
-        cout << "\n\t\tError! Cannot open the file!!\n\n";
+        setColor(12); cout << "\n\t\tError! Cannot open the file!!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -789,7 +944,8 @@ void balance()
             flag = 1;
             clear_screen();
             logo();
-            cout << "*** Account Details ***\n\n";
+            setColor(11); cout << "*** Account Details ***\n\n"; setColor(7);
+            setColor(14);
             cout << "Account No  : " << b.acc_no
                  << "\nName        : " << b.name
                  << "\nFather Name : " << b.fathname
@@ -799,13 +955,12 @@ void balance()
                  << "\nID Card     : " << b.idnum
                  << "\nAddress     : " << b.address
                  << "\nBalance     : Rs. " << fixed << setprecision(2) << b.amt << "\n";
+            setColor(7);
         }
     }
 
     if (flag == 0)
-    {
-        cout << "\n\t\tNo Record Found!!!\n\n";
-    }
+        { setColor(12); cout << "\n\t\tNo Record Found!!!\n\n"; setColor(7); }
 
     in_file.close();
     pause_screen();
@@ -815,16 +970,18 @@ void deposit()
 {
     clear_screen();
     logo();
-    cout << "\n\n================== DEPOSIT MONEY ==================\n\n";
+
+    setColor(14); cout << "\n\n================== DEPOSIT MONEY ==================\n\n"; setColor(7);
+
     int acn;
     int flag = 0;
     float deposit_amount;
 
-    cout << "Enter Account Number: ";
+    setColor(14); cout << "Enter Account Number: "; setColor(7);
     if (!(cin >> acn))
     {
         clear_input_buffer();
-        cout << "\n\t\tInvalid input!\n\n";
+        setColor(12); cout << "\n\t\tInvalid input!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -835,7 +992,7 @@ void deposit()
 
     if (!in_file.is_open())
     {
-        cout << "\n\t\tError! Cannot open the file!!\n\n";
+        setColor(12); cout << "\n\t\tError! Cannot open the file!!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -847,16 +1004,19 @@ void deposit()
             flag = 1;
             clear_screen();
             logo();
-            cout << "*** Account Details ***\n\n";
+
+            setColor(11); cout << "*** Account Details ***\n\n"; setColor(7);
+            setColor(14);
             cout << "Account No  : " << b.acc_no
                  << "\nName        : " << b.name
                  << "\nBalance     : Rs. " << fixed << setprecision(2) << b.amt << "\n\n";
+            setColor(7);
 
-            cout << "Enter the amount you want to deposit: Rs. ";
+            setColor(14); cout << "Enter the amount you want to deposit: Rs. "; setColor(7);
             if (!(cin >> deposit_amount) || deposit_amount <= 0)
             {
                 clear_input_buffer();
-                cout << "\n\n\t\tInvalid amount!\n\n";
+                setColor(12); cout << "\n\n\t\tInvalid amount!\n\n"; setColor(7);
                 out_file.write((char *)&b, sizeof(b));
                 in_file.close();
                 out_file.close();
@@ -869,8 +1029,8 @@ void deposit()
 
             b.amt += deposit_amount;
             out_file.write((char *)&b, sizeof(b));
-            cout << "\n\nDeposited Successfully!\n";
-            cout << "New Balance: Rs. " << fixed << setprecision(2) << b.amt << "\n\n";
+            setColor(10); cout << "\n\nDeposited Successfully!\n"; 
+            cout << "New Balance: Rs. " << fixed << setprecision(2) << b.amt << "\n\n"; setColor(7);
         }
         else
         {
@@ -879,9 +1039,7 @@ void deposit()
     }
 
     if (flag == 0)
-    {
-        cout << "\n\t\tNo Record Found!!!\n\n";
-    }
+        { setColor(12); cout << "\n\t\tNo Record Found!!!\n\n"; setColor(7); }
 
     in_file.close();
     out_file.close();
@@ -890,22 +1048,23 @@ void deposit()
     pause_screen();
 }
 
-// Withdraw money from account
 void withdraw()
 {
     clear_screen();
     logo();
-    cout << "\n\n================== WITHDRAW MONEY =================\n\n";
+
+    setColor(14); cout << "\n\n================== WITHDRAW MONEY =================\n\n"; setColor(7);
+
     int acn;
     int flag = 0;
     float withdraw_amount;
     const float WITHDRAW_LIMIT = 50000.0;
 
-    cout << "Enter Account Number: ";
+    setColor(14); cout << "Enter Account Number: "; setColor(7);
     if (!(cin >> acn))
     {
         clear_input_buffer();
-        cout << "\n\t\tInvalid input!\n\n";
+        setColor(12); cout << "\n\t\tInvalid input!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -916,7 +1075,7 @@ void withdraw()
 
     if (!in_file.is_open())
     {
-        cout << "\n\t\tError! Cannot open the file!!\n\n";
+        setColor(12); cout << "\n\t\tError! Cannot open the file!!\n\n"; setColor(7);
         pause_screen();
         return;
     }
@@ -926,38 +1085,40 @@ void withdraw()
         if (b.acc_no == acn)
         {
             bool valid_withdrawal = false;
-
             while (!valid_withdrawal)
             {
                 clear_screen();
                 logo();
-                cout << "*** Account Details ***\n\n";
+
+                setColor(11); cout << "*** Account Details ***\n\n"; setColor(7);
+                setColor(14);
                 cout << "Account No  : " << b.acc_no
                      << "\nName        : " << b.name
                      << "\nBalance     : Rs. " << fixed << setprecision(2) << b.amt << "\n\n";
+                setColor(7);
 
-                cout << "Enter the amount you want to withdraw: Rs. ";
+                setColor(14); cout << "Enter the amount you want to withdraw: Rs. "; setColor(7);
                 if (!(cin >> withdraw_amount))
                 {
                     clear_input_buffer();
-                    cout << "\n\nInvalid input!\n\n";
+                    setColor(12); cout << "\n\nInvalid input!\n\n"; setColor(7);
                     continue;
                 }
                 clear_input_buffer();
 
                 if (withdraw_amount <= 0)
                 {
-                    cout << "\n\nAmount must be greater than zero!\n\n";
+                    setColor(12); cout << "\n\nAmount must be greater than zero!\n\n"; setColor(7);
                     pause_screen();
                 }
                 else if (withdraw_amount > WITHDRAW_LIMIT)
                 {
-                    cout << "\n\nWithdraw Limit of Rs. 50,000 Exceeded!\n\n";
+                    setColor(12); cout << "\n\nWithdraw Limit of Rs. 50,000 Exceeded!\n\n"; setColor(7);
                     pause_screen();
                 }
                 else if (withdraw_amount > b.amt)
                 {
-                    cout << "\n\nInsufficient Balance!\n\n";
+                    setColor(12); cout << "\n\nInsufficient Balance!\n\n"; setColor(7);
                     pause_screen();
                 }
                 else
@@ -966,8 +1127,8 @@ void withdraw()
                     out_file.write((char *)&b, sizeof(b));
                     flag = 1;
                     valid_withdrawal = true;
-                    cout << "\n\nWithdrawn Successfully!\n";
-                    cout << "Remaining Balance: Rs. " << fixed << setprecision(2) << b.amt << "\n\n";
+                    setColor(10); cout << "\n\nWithdrawn Successfully!\n"; 
+                    cout << "Remaining Balance: Rs. " << fixed << setprecision(2) << b.amt << "\n\n"; setColor(7);
                 }
             }
         }
@@ -978,9 +1139,7 @@ void withdraw()
     }
 
     if (flag == 0)
-    {
-        cout << "\n\t\tNo Record Found!!!\n\n";
-    }
+        { setColor(12); cout << "\n\t\tNo Record Found!!!\n\n"; setColor(7); }
 
     in_file.close();
     out_file.close();
