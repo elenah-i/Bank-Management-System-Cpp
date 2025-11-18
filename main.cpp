@@ -498,7 +498,7 @@ void new_acc()
 
 
         setColor(14);
-        cout << "\n\t\tAccount Number: ";        s
+        cout << "\n\t\tAccount Number: ";        
         setColor(7);
         
         if (!(cin >> acn))
